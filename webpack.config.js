@@ -14,6 +14,30 @@ module.exports = {
     filename: '[name].bundle.js',
     path: __dirname + '/dist',
   },
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              esModule: false,
+              name(file) {
+                return '[path][name].[ext]';
+              },
+              publicPath: function (url) {
+                return url.replace('../', '/assets/');
+              },
+            },
+          },
+          {
+            loader: 'image-webpack-loader',
+          },
+        ],
+      },
+    ],
+  },
   plugins: [
     new webpack.ProvidePlugin({
       $: 'jquery',
